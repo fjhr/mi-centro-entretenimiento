@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useConfig } from './context/ConfigContext.jsx';
 import Ajustes from './modules/ajustes/Ajustes.jsx';
+import Fuentes from './modules/fuentes/Fuentes.jsx';
 
 const SECCIONES = [
   ['fuentes', '📺 Fuentes'],
@@ -15,7 +16,7 @@ const SECCIONES = [
 const EN_CONSTRUCCION = (nombre) => () => <p>Sección «{nombre}» en construcción…</p>;
 
 const MODULOS = {
-  fuentes: EN_CONSTRUCCION('Fuentes'),
+  fuentes: Fuentes,
   cine: EN_CONSTRUCCION('Noche de Cine'),
   semanal: EN_CONSTRUCCION('Modo Netflix'),
   maraton: EN_CONSTRUCCION('Maratón'),
