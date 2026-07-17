@@ -5,6 +5,7 @@ import Fuentes from './modules/fuentes/Fuentes.jsx';
 import NocheDeCine from './modules/cine/NocheDeCine.jsx';
 import QueVeo from './modules/queveo/QueVeo.jsx';
 import ModoNetflix from './modules/semanal/ModoNetflix.jsx';
+import Maraton from './modules/maraton/Maraton.jsx';
 
 const SECCIONES = [
   ['fuentes', '📺 Fuentes'],
@@ -22,7 +23,7 @@ const MODULOS = {
   fuentes: Fuentes,
   cine: NocheDeCine,
   semanal: ModoNetflix,
-  maraton: EN_CONSTRUCCION('Maratón'),
+  maraton: Maraton,
   aprendizaje: EN_CONSTRUCCION('Aprendizaje'),
   queveo: QueVeo,
   ajustes: Ajustes,
