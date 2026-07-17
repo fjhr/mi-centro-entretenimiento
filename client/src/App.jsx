@@ -3,6 +3,7 @@ import { useConfig } from './context/ConfigContext.jsx';
 import Ajustes from './modules/ajustes/Ajustes.jsx';
 import Fuentes from './modules/fuentes/Fuentes.jsx';
 import NocheDeCine from './modules/cine/NocheDeCine.jsx';
+import QueVeo from './modules/queveo/QueVeo.jsx';
 
 const SECCIONES = [
   ['fuentes', '📺 Fuentes'],
@@ -22,7 +23,7 @@ const MODULOS = {
   semanal: EN_CONSTRUCCION('Modo Netflix'),
   maraton: EN_CONSTRUCCION('Maratón'),
   aprendizaje: EN_CONSTRUCCION('Aprendizaje'),
-  queveo: EN_CONSTRUCCION('¿Qué veo?'),
+  queveo: QueVeo,
   ajustes: Ajustes,
 };
 
