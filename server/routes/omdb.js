@@ -34,7 +34,8 @@ router.get('/', async (req, res) => {
       fecha,
     });
   } catch (error) {
-    res.status(502).json({ error: 'omdb', mensaje: error.message });
+    console.error('[omdb]', error.message);
+    res.status(502).json({ error: 'omdb', mensaje: 'No se pudo consultar OMDb en este momento.' });
   }
 });
 
