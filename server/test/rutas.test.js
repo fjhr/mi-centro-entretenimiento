@@ -34,4 +34,19 @@ describe('rutas de config y datos', () => {
     const r = await request(app).get('/api/datos/..%2Fconfig');
     expect(r.status).toBe(400);
   });
+
+  it('responde 404 en español para rutas inexistentes', async () => {
+    const r = await request(app).get('/api/no-existe');
+    expect(r.status).toBe(404);
+    expect(r.body).toEqual({ error: 'no-encontrado', mensaje: 'Ruta no encontrada.' });
+  });
+
+  it('responde 400 en español ante JSON malformado', async () => {
+    const r = await request(app)
+      .put('/api/datos/prueba')
+      .set('Content-Type', 'application/json')
+      .send('{ esto no es json');
+    expect(r.status).toBe(400);
+    expect(r.body).toEqual({ error: 'servidor', mensaje: 'Error interno del servidor.' });
+  });
 });
