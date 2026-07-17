@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useConfig } from './context/ConfigContext.jsx';
 import Ajustes from './modules/ajustes/Ajustes.jsx';
 import Fuentes from './modules/fuentes/Fuentes.jsx';
+import NocheDeCine from './modules/cine/NocheDeCine.jsx';
 
 const SECCIONES = [
   ['fuentes', '📺 Fuentes'],
@@ -17,7 +18,7 @@ const EN_CONSTRUCCION = (nombre) => () => <p>Sección «{nombre}» en construcci
 
 const MODULOS = {
   fuentes: Fuentes,
-  cine: EN_CONSTRUCCION('Noche de Cine'),
+  cine: NocheDeCine,
   semanal: EN_CONSTRUCCION('Modo Netflix'),
   maraton: EN_CONSTRUCCION('Maratón'),
   aprendizaje: EN_CONSTRUCCION('Aprendizaje'),
