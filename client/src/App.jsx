@@ -4,6 +4,7 @@ import Ajustes from './modules/ajustes/Ajustes.jsx';
 import Fuentes from './modules/fuentes/Fuentes.jsx';
 import NocheDeCine from './modules/cine/NocheDeCine.jsx';
 import QueVeo from './modules/queveo/QueVeo.jsx';
+import ModoNetflix from './modules/semanal/ModoNetflix.jsx';
 
 const SECCIONES = [
   ['fuentes', '📺 Fuentes'],
@@ -20,7 +21,7 @@ const EN_CONSTRUCCION = (nombre) => () => <p>Sección «{nombre}» en construcci
 const MODULOS = {
   fuentes: Fuentes,
   cine: NocheDeCine,
-  semanal: EN_CONSTRUCCION('Modo Netflix'),
+  semanal: ModoNetflix,
   maraton: EN_CONSTRUCCION('Maratón'),
   aprendizaje: EN_CONSTRUCCION('Aprendizaje'),
   queveo: QueVeo,
