@@ -1,0 +1,13 @@
+{
+  "name": "mi-centro-entretenimiento",
+  "private": true,
+  "workspaces": ["server", "client"],
+  "scripts": {
+    "dev": "concurrently -n servidor,cliente -c blue,magenta \"npm run dev -w server\" \"npm run dev -w client\"",
+    "start": "npm run dev",
+    "test": "npm test -w server && npm test -w client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
