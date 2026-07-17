@@ -93,6 +93,12 @@ Mapeo mood→géneros/etiquetas definido en un archivo de configuración. El his
 - Indexadores de torrents de contenido con copyright.
 - Reproducción embebida de contenido (la app enlaza, no reproduce, salvo embeds triviales tipo YouTube si aportan).
 
+## Instalación y ejecución amigables (requisito del usuario)
+
+- **Arranque con doble clic:** un `Iniciar.bat` en la raíz que instala dependencias si faltan (`npm install` silencioso la primera vez), arranca servidor + cliente y abre el navegador automáticamente en la app. Alternativa técnica: `npm start` en la raíz hace lo mismo.
+- **Configuración de API keys desde la propia app:** la pantalla de Ajustes permite pegar las keys de TMDB y OMDb con instrucciones paso a paso (enlaces directos a los formularios de registro) y un botón "Probar conexión". El servidor las guarda en un archivo de configuración local (gitignored); nunca se edita `.env` a mano.
+- **Único prerequisito:** tener Node.js instalado; el README lo explica con capturas/enlace de descarga, y `Iniciar.bat` detecta su ausencia y muestra un mensaje claro en español.
+
 ## Notas operativas
 
 - El proyecto vive en una carpeta sincronizada por OneDrive; se recomendará en el README excluir `node_modules/`, `server/cache/` y `server/data/` de la sincronización (o mover el repo fuera de OneDrive) para evitar conflictos y lentitud.
