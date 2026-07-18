@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useConfig } from './context/ConfigContext.jsx';
 import Ajustes from './modules/ajustes/Ajustes.jsx';
 import Fuentes from './modules/fuentes/Fuentes.jsx';
+import Reproducir from './modules/reproducir/Reproducir.jsx';
 import NocheDeCine from './modules/cine/NocheDeCine.jsx';
 import QueVeo from './modules/queveo/QueVeo.jsx';
 import ModoNetflix from './modules/semanal/ModoNetflix.jsx';
@@ -10,6 +11,7 @@ import Curador from './modules/aprendizaje/Curador.jsx';
 
 const SECCIONES = [
   ['fuentes', '📺 Fuentes'],
+  ['reproducir', '🎬 Reproducir'],
   ['cine', '🎬 Noche de Cine'],
   ['semanal', '🗓️ Modo Netflix'],
   ['maraton', '🍿 Maratón'],
@@ -20,6 +22,7 @@ const SECCIONES = [
 
 const MODULOS = {
   fuentes: Fuentes,
+  reproducir: Reproducir,
   cine: NocheDeCine,
   semanal: ModoNetflix,
   maraton: Maraton,
