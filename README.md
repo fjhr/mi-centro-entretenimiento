@@ -1,15 +1,23 @@
 # 🎬 Mi Centro de Entretenimiento
 
-Dashboard personal de entretenimiento **gratis, legal y en español**. Corre en tu laptop y convierte las mejores fuentes gratuitas (Tubi, Pluto TV, Internet Archive, Epic Games, Khan Academy…) en un sistema premium con:
+Dashboard personal de entretenimiento **gratis**. Corre en tu laptop y convierte las mejores fuentes gratuitas (Tubi, Pluto TV, Internet Archive, Epic Games, Khan Academy…) en un sistema premium con:
 
-- 📺 **Dashboard de Fuentes** — plataformas gratuitas por categoría (películas, series, música, podcasts, anime, libros, juegos, documentales, aprendizaje y torrents legales), con consejos para usarlas como servicio de paga.
+- 📺 **Dashboard de Fuentes** — plataformas gratuitas por categoría (películas, series, música, podcasts, anime, libros, juegos, documentales, aprendizaje y torrents), con consejos para usarlas como servicio de paga.
 - 🎬 **Noche de Cine** — elige tu mood y recibe 10 películas con ratings reales de IMDb y Rotten Tomatoes, dónde verlas gratis en tu país y 3 respaldos.
 - 🗓️ **Modo Netflix** — parrilla semanal de 7 "canales" temáticos generada para ti.
 - 🍿 **Maratón** — dile cuántas horas tienes y arma tu horario de mañana/tarde/noche.
 - 🧠 **Curador de Aprendizaje** — plan semanal de sesiones de <45 min según tus intereses.
 - 🎲 **¿Qué veo?** — 4 preguntas (mood, tiempo, energía, compañía) y te da 3 películas + 3 videos + 3 podcasts + 3 juegos + 3 documentales.
 
-> Solo fuentes legales. Los torrents incluidos son de dominio público / Creative Commons (Internet Archive, distros Linux).
+> Los torrents incluidos son de dominio público / Creative Commons (Internet Archive, distros Linux).
+
+## 🎬 Reproducir (streaming legal)
+
+Reproduce dentro de la app contenido de **Internet Archive** (búscalo en la sección Reproducir) y orígenes propios que agregues a tu **lista de fuentes permitidas** en Ajustes. Soporta URLs de video, enlaces `.torrent` y magnets **con webseed de un host permitido**, transmitiendo con WebTorrent mientras descarga.
+
+El reproductor solo descarga desde webseeds (servidores HTTP permitidos), nunca del enjambre P2P anonimo.
+
+> Por diseño, un magnet sin origen verificable (solo infohash y trackers públicos) se rechaza: la app reproduce Internet Archive y las fuentes legales que tú autorices, no es un buscador de contenido con copyright.
 
 ## Requisitos
 

@@ -5,7 +5,12 @@ const router = Router();
 
 router.get('/', (req, res) => {
   const c = obtenerConfig();
-  res.json({ region: c.region, tieneTmdb: Boolean(c.tmdbKey), tieneOmdb: Boolean(c.omdbKey) });
+  res.json({
+    region: c.region,
+    tieneTmdb: Boolean(c.tmdbKey),
+    tieneOmdb: Boolean(c.omdbKey),
+    allowlist: c.allowlist ?? [],
+  });
 });
 
 router.put('/', (req, res) => {
@@ -14,6 +19,11 @@ router.put('/', (req, res) => {
   if (typeof tmdbKey === 'string' && tmdbKey.trim()) actual.tmdbKey = tmdbKey.trim();
   if (typeof omdbKey === 'string' && omdbKey.trim()) actual.omdbKey = omdbKey.trim();
   if (typeof region === 'string' && region.trim()) actual.region = region.trim().toUpperCase();
+  if (Array.isArray(req.body?.allowlist)) {
+    actual.allowlist = [...new Set(req.body.allowlist
+      .filter((x) => typeof x === 'string' && x.trim())
+      .map((x) => x.trim().toLowerCase()))];
+  }
   guardarJson('config', actual);
   res.json({ ok: true });
 });

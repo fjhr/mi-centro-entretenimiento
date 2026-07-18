@@ -23,8 +23,8 @@ describe('almacen', () => {
   });
 
   it('obtenerConfig aplica valores por defecto', () => {
-    expect(obtenerConfig()).toEqual({ tmdbKey: '', omdbKey: '', region: 'MX' });
+    expect(obtenerConfig()).toEqual({ tmdbKey: '', omdbKey: '', region: 'MX', allowlist: [] });
     guardarJson('config', { tmdbKey: 'abc', region: 'ES' });
-    expect(obtenerConfig()).toEqual({ tmdbKey: 'abc', omdbKey: '', region: 'ES' });
+    expect(obtenerConfig()).toEqual({ tmdbKey: 'abc', omdbKey: '', region: 'ES', allowlist: [] });
   });
 });

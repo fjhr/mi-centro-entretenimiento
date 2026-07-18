@@ -13,13 +13,13 @@ describe('rutas de config y datos', () => {
   it('GET /api/config no expone las keys', async () => {
     const r = await request(app).get('/api/config');
     expect(r.status).toBe(200);
-    expect(r.body).toEqual({ region: 'MX', tieneTmdb: false, tieneOmdb: false });
+    expect(r.body).toEqual({ region: 'MX', tieneTmdb: false, tieneOmdb: false, allowlist: [] });
   });
 
   it('PUT /api/config guarda keys y region', async () => {
     await request(app).put('/api/config').send({ tmdbKey: 'k1', region: 'es' });
     const r = await request(app).get('/api/config');
-    expect(r.body).toEqual({ region: 'ES', tieneTmdb: true, tieneOmdb: false });
+    expect(r.body).toEqual({ region: 'ES', tieneTmdb: true, tieneOmdb: false, allowlist: [] });
   });
 
   it('GET/PUT /api/datos/:nombre persiste JSON arbitrario', async () => {
@@ -48,5 +48,16 @@ describe('rutas de config y datos', () => {
       .send('{ esto no es json');
     expect(r.status).toBe(400);
     expect(r.body).toEqual({ error: 'json-invalido', mensaje: 'Cuerpo JSON inválido.' });
+  });
+
+  it('GET /api/config incluye allowlist (vacía por defecto)', async () => {
+    const r = await request(app).get('/api/config');
+    expect(r.body.allowlist).toEqual([]);
+  });
+
+  it('PUT /api/config guarda la allowlist normalizada', async () => {
+    await request(app).put('/api/config').send({ allowlist: ['  Jamendo.com ', '', 'MI.local'] });
+    const r = await request(app).get('/api/config');
+    expect(r.body.allowlist).toEqual(['jamendo.com', 'mi.local']);
   });
 });
