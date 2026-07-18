@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { api } from '../../lib/api.js';
 import { useConfig } from '../../context/ConfigContext.jsx';
 
@@ -15,6 +15,8 @@ export default function Ajustes() {
   const [estado, setEstado] = useState('');
   const [prueba, setPrueba] = useState(null);
   const [error, setError] = useState('');
+  const [hosts, setHosts] = useState(config?.allowlist ?? []);
+  const [nuevoHost, setNuevoHost] = useState('');
 
   const guardar = async () => {
     setError('');
@@ -42,6 +44,20 @@ export default function Ajustes() {
       setEstado('');
     }
   };
+
+  const guardarAllowlist = async (lista) => {
+    setHosts(lista);
+    await api('/config', { method: 'PUT', body: { allowlist: lista } });
+    await recargar();
+  };
+  const agregarHost = () => {
+    const h = nuevoHost.trim().toLowerCase();
+    if (h && !hosts.includes(h)) guardarAllowlist([...hosts, h]);
+    setNuevoHost('');
+  };
+  const quitarHost = (h) => guardarAllowlist(hosts.filter((x) => x !== h));
+
+  useEffect(() => { if (config?.allowlist) setHosts(config.allowlist); }, [config?.allowlist]);
 
   return (
     <div>
@@ -77,6 +93,29 @@ export default function Ajustes() {
             TMDB: {prueba.tmdb ? '✅ funciona' : '❌ falla'} · OMDb: {prueba.omdb ? '✅ funciona' : '❌ falla'}
           </p>
         )}
+      </div>
+      <div className="tarjeta" style={{ maxWidth: 560, marginTop: 20 }}>
+        <h3>Fuentes permitidas (allowlist)</h3>
+        <p className="texto-suave">
+          Solo se reproducen orígenes de esta lista, más Internet Archive (siempre permitido).
+          Agrega hosts de fuentes legales que tengas derecho a usar. Un magnet sin webseed o tracker
+          de un host permitido se rechazará.
+        </p>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <input placeholder="ejemplo: jamendo.com" value={nuevoHost}
+            onChange={(e) => setNuevoHost(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && agregarHost()} style={{ flex: 1 }} />
+          <button className="boton" onClick={agregarHost}>Agregar</button>
+        </div>
+        <ul style={{ marginTop: 12, paddingLeft: 0, listStyle: 'none' }}>
+          <li className="texto-suave" style={{ marginBottom: 6 }}>archive.org · bt.archive.org (siempre permitidos)</li>
+          {hosts.map((h) => (
+            <li key={h} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+              <span>{h}</span>
+              <button className="chip" onClick={() => quitarHost(h)}>Quitar</button>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
