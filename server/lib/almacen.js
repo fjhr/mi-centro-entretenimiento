@@ -21,7 +21,7 @@ export function guardarJson(nombre, valor) {
   fs.writeFileSync(path.join(dirDatos(), `${nombre}.json`), JSON.stringify(valor, null, 2));
 }
 
-const CONFIG_POR_DEFECTO = { tmdbKey: '', omdbKey: '', region: 'MX' };
+const CONFIG_POR_DEFECTO = { tmdbKey: '', omdbKey: '', region: 'MX', allowlist: [] };
 
 export function obtenerConfig() {
   return { ...CONFIG_POR_DEFECTO, ...leerJson('config', {}) };
