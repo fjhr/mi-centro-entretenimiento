@@ -1,0 +1,7 @@
+node_modules/
+server/cache/
+server/data/
+client/dist/
+.env
+.claude/
+.superpowers/
