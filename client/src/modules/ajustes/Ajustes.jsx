@@ -27,7 +27,6 @@ export default function Ajustes() {
       setEstado('guardado');
     } catch {
       setError('No se pudo guardar la configuración.');
-    } finally {
       setEstado('');
     }
   };
