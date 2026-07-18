@@ -1,13 +1,16 @@
-const CONFIABLES = ['archive.org', 'bt.archive.org'];
-
 function normalizarHost(host) {
   return (host || '').toLowerCase().split(':')[0];
 }
 
+export function esInternetArchive(host) {
+  const h = (host || '').toLowerCase().split(':')[0];
+  return h === 'archive.org' || h.endsWith('.archive.org');
+}
+
 export function hostPermitido(host, allowlist = []) {
+  if (!host) return false;
+  if (esInternetArchive(host)) return true;
   const h = normalizarHost(host);
-  if (!h) return false;
-  if (h === 'archive.org' || h.endsWith('.archive.org') || CONFIABLES.includes(h)) return true;
   return allowlist.map((x) => normalizarHost(x)).includes(h);
 }
 
@@ -39,8 +42,7 @@ export function validarOrigen(origen, allowlist = []) {
     if (!host) return { ok: false, motivo: 'formato-no-soportado' };
 
     // Archive.org URLs always return 'ia' type
-    const h = normalizarHost(host);
-    if (h === 'archive.org' || h.endsWith('.archive.org')) return { ok: true, tipo: 'ia' };
+    if (esInternetArchive(host)) return { ok: true, tipo: 'ia' };
 
     if (!hostPermitido(host, allowlist)) return { ok: false, motivo: 'host-no-permitido' };
     return texto.toLowerCase().split('?')[0].endsWith('.torrent')
