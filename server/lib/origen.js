@@ -32,7 +32,8 @@ export function validarOrigen(origen, allowlist = []) {
   if (!texto) return { ok: false, motivo: 'formato-no-soportado' };
 
   if (texto.startsWith('magnet:?')) {
-    const hosts = [...hostsDeMagnet(texto, 'ws'), ...hostsDeMagnet(texto, 'xs'), ...hostsDeMagnet(texto, 'tr')];
+    // Un tracker no fija el contenido servido: solo un webseed (ws/xs) pin-ea el origen HTTP.
+    const hosts = [...hostsDeMagnet(texto, 'ws'), ...hostsDeMagnet(texto, 'xs')];
     if (hosts.some((h) => hostPermitido(h, allowlist))) return { ok: true, tipo: 'torrent' };
     return { ok: false, motivo: 'origen-no-verificable' };
   }

@@ -32,9 +32,14 @@ router.get('/torrent/:id/:indice', async (req, res) => {
   const rango = req.headers.range;
   if (rango) {
     const m = /bytes=(\d*)-(\d*)/.exec(rango);
-    const start = m && m[1] ? Number(m[1]) : 0;
-    const end = m && m[2] ? Number(m[2]) : archivo.length - 1;
-    if (start >= archivo.length || end >= archivo.length || start > end) {
+    let start = m && m[1] ? Number(m[1]) : 0;
+    let end = Math.min(m && m[2] ? Number(m[2]) : archivo.length - 1, archivo.length - 1);
+    if (m && !m[1] && m[2]) {
+      // Forma sufijo: bytes=-N (los ultimos N bytes)
+      start = Math.max(0, archivo.length - Number(m[2]));
+      end = archivo.length - 1;
+    }
+    if (start >= archivo.length || start > end) {
       res.setHeader('Content-Range', `bytes */${archivo.length}`);
       return res.status(416).end();
     }

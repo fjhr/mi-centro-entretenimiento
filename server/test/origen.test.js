@@ -38,9 +38,9 @@ describe('validarOrigen', () => {
     const m = 'magnet:?xt=urn:btih:abc&ws=https://miservidor.local/pelicula.mp4';
     expect(validarOrigen(m, ALLOW)).toEqual({ ok: true, tipo: 'torrent' });
   });
-  it('acepta magnet con tracker de archive.org', () => {
+  it('rechaza magnet cuyo unico origen es un tracker (un tracker no fija el contenido)', () => {
     const m = 'magnet:?xt=urn:btih:abc&tr=' + encodeURIComponent('udp://bt.archive.org:6969');
-    expect(validarOrigen(m, ALLOW)).toEqual({ ok: true, tipo: 'torrent' });
+    expect(validarOrigen(m, ALLOW)).toEqual({ ok: false, motivo: 'origen-no-verificable' });
   });
   it('rechaza magnet pelado (sin webseed ni tracker permitido)', () => {
     const m = 'magnet:?xt=urn:btih:abc&tr=' + encodeURIComponent('udp://tracker.publico.net:80');

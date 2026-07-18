@@ -13,7 +13,9 @@ Dashboard personal de entretenimiento **gratis**. Corre en tu laptop y convierte
 
 ## 🎬 Reproducir (streaming legal)
 
-Reproduce dentro de la app contenido de **Internet Archive** (búscalo en la sección Reproducir) y orígenes propios que agregues a tu **lista de fuentes permitidas** en Ajustes. Soporta URLs de video, enlaces `.torrent` y magnets **con webseed/tracker de un host permitido**, transmitiendo con WebTorrent mientras descarga.
+Reproduce dentro de la app contenido de **Internet Archive** (búscalo en la sección Reproducir) y orígenes propios que agregues a tu **lista de fuentes permitidas** en Ajustes. Soporta URLs de video, enlaces `.torrent` y magnets **con webseed de un host permitido**, transmitiendo con WebTorrent mientras descarga.
+
+El reproductor solo descarga desde webseeds (servidores HTTP permitidos), nunca del enjambre P2P anonimo.
 
 > Por diseño, un magnet sin origen verificable (solo infohash y trackers públicos) se rechaza: la app reproduce Internet Archive y las fuentes legales que tú autorices, no es un buscador de contenido con copyright.
 

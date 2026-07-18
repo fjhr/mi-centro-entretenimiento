@@ -38,4 +38,41 @@ describe('torrentes', () => {
     expect(handle.length).toBeGreaterThan(0);
     await cerrar(id);
   }, 30000);
+
+  it('evict el torrent mas antiguo al superar MAX_ACTIVOS y reutiliza uno activo sin descargas', async () => {
+    // Torrents creados a partir de .torrent buffers ya tienen metadata completa:
+    // agregar() resuelve al leer el buffer, sin necesidad de peers ni descargas.
+    const dirFuente2 = fs.mkdtempSync(path.join(os.tmpdir(), 'src2-'));
+    const rutas = [0, 1, 2, 3].map((i) => {
+      const p = path.join(dirFuente2, `archivo-${i}.txt`);
+      fs.writeFileSync(p, `contenido distinto numero ${i} `.repeat(500));
+      return p;
+    });
+    const buffers = await Promise.all(
+      rutas.map((p) => new Promise((resolve, reject) => {
+        createTorrent(p, (err, torrent) => (err ? reject(err) : resolve(torrent)));
+      }))
+    );
+
+    const resultados = [];
+    for (const buf of buffers) {
+      resultados.push(await agregar(buf));
+    }
+
+    // El primero (mas antiguo) debe haber sido evictado al agregar el cuarto (MAX_ACTIVOS = 3).
+    expect(await obtenerArchivo(resultados[0].id, 0)).toBeNull();
+    expect(await obtenerArchivo(resultados[3].id, 0)).not.toBeNull();
+    expect(await obtenerArchivo(resultados[1].id, 0)).not.toBeNull();
+    expect(await obtenerArchivo(resultados[2].id, 0)).not.toBeNull();
+
+    // Reutilizacion: volver a agregar un buffer aun activo devuelve el mismo id, sin evictar mas.
+    const reutilizado = await agregar(buffers[1]);
+    expect(reutilizado.id).toBe(resultados[1].id);
+    expect(await obtenerArchivo(resultados[2].id, 0)).not.toBeNull();
+    expect(await obtenerArchivo(resultados[3].id, 0)).not.toBeNull();
+
+    await cerrar(resultados[1].id);
+    await cerrar(resultados[2].id);
+    await cerrar(resultados[3].id);
+  }, 30000);
 });

@@ -20,9 +20,9 @@ router.put('/', (req, res) => {
   if (typeof omdbKey === 'string' && omdbKey.trim()) actual.omdbKey = omdbKey.trim();
   if (typeof region === 'string' && region.trim()) actual.region = region.trim().toUpperCase();
   if (Array.isArray(req.body?.allowlist)) {
-    actual.allowlist = req.body.allowlist
+    actual.allowlist = [...new Set(req.body.allowlist
       .filter((x) => typeof x === 'string' && x.trim())
-      .map((x) => x.trim().toLowerCase());
+      .map((x) => x.trim().toLowerCase()))];
   }
   guardarJson('config', actual);
   res.json({ ok: true });

@@ -15,7 +15,8 @@ function dirDatos() {
   return process.env.DIR_TORRENTES || path.join(aqui, '..', 'cache', 'torrentes');
 }
 function ext(nombre) {
-  return nombre.slice(nombre.lastIndexOf('.')).toLowerCase();
+  const i = nombre.lastIndexOf('.');
+  return i < 0 ? '' : nombre.slice(i).toLowerCase();
 }
 
 let clientePromesa = null;
@@ -23,7 +24,10 @@ const orden = []; // infohashes por orden de adicion
 
 async function cliente() {
   if (!clientePromesa) {
-    clientePromesa = import('webtorrent').then(({ default: WebTorrent }) => new WebTorrent());
+    clientePromesa = import('webtorrent').then(({ default: WebTorrent }) =>
+      // Solo webseeds (fuentes HTTP permitidas): sin DHT ni trackers, no se descarga del enjambre P2P anonimo.
+      new WebTorrent({ dht: false, tracker: false, lsd: false, webSeeds: true })
+    );
   }
   return clientePromesa;
 }
@@ -33,7 +37,14 @@ export async function agregar(origen) {
   const existente = wt.torrents.find((t) => t.infoHash && origen.toString().toLowerCase().includes(t.infoHash));
   const torrent = existente || await new Promise((resolve, reject) => {
     const t = wt.add(origen, { path: dirDatos() }, () => resolve(t));
-    t.on('error', reject);
+    t.on('error', (err) => {
+      // WebTorrent detecta duplicados (p.ej. al reutilizar un buffer de .torrent) y
+      // emite error en vez de devolver el torrent activo: lo resolvemos nosotros.
+      const m = /^Cannot add duplicate torrent (\w+)/i.exec(err && err.message);
+      const dup = m && wt.torrents.find((x) => x.infoHash === m[1].toLowerCase());
+      if (dup) return resolve(dup);
+      reject(err);
+    });
   });
   if (!orden.includes(torrent.infoHash)) {
     orden.push(torrent.infoHash);
