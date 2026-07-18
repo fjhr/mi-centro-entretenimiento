@@ -6,6 +6,7 @@ import configRouter from './routes/config.js';
 import datosRouter from './routes/datos.js';
 import tmdbRouter from './routes/tmdb.js';
 import omdbRouter from './routes/omdb.js';
+import reproductorRouter from './routes/reproductor.js';
 
 const aqui = path.dirname(fileURLToPath(import.meta.url));
 const dirDist = path.join(aqui, '..', 'client', 'dist');
@@ -17,6 +18,7 @@ export function crearApp() {
   app.use('/api/datos', datosRouter);
   app.use('/api/tmdb', tmdbRouter);
   app.use('/api/omdb', omdbRouter);
+  app.use('/api/reproductor', reproductorRouter);
 
   if (fs.existsSync(dirDist)) {
     app.use(express.static(dirDist));
