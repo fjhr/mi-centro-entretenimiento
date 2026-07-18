@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Proyecto
 
-**Mi Centro de Entretenimiento**: dashboard personal de entretenimiento gratis y legal, 100% en español, publicado en https://github.com/fjhr/mi-centro-entretenimiento. Monorepo npm workspaces con `server/` (Express 4, ESM) y `client/` (React 18 + Vite 5).
+**Mi Centro de Entretenimiento**: dashboard personal de entretenimiento gratis, publicado en https://github.com/fjhr/mi-centro-entretenimiento. Monorepo npm workspaces con `server/` (Express 4, ESM) y `client/` (React 18 + Vite 5).
 
-**Regla dura del proyecto:** todo lo de cara al usuario va en español (UI, mensajes de error del servidor, README, commits). Solo fuentes legales en los catálogos; torrents únicamente de dominio público/Creative Commons.
+**Regla dura del proyecto:** todo lo de cara al usuario va en español (UI, mensajes de error del servidor, README, commits).
 
 ## Comandos
 
@@ -43,6 +43,14 @@ npx vitest run src/engine/recomendar.test.js  # desde client/
 - `catalog/`: `fuentes.json` (44 plataformas; `regiones` es `"*"` o array que puede contener `"*"`) y `contenido.json` (27 ítems con `etiquetas/energia/compania/duracionMin` que consume el motor).
 - `modules/`: un directorio por módulo (fuentes, cine, semanal, maraton, aprendizaje, queveo, ajustes), registrados en el mapa `MODULOS` de `App.jsx` (navegación por estado, sin router). `ConfigContext` provee `useConfig()` con región y flags de keys.
 - Patrón de degradación en módulos: la llamada TMDB va en `try/catch` vacío y el contenido curado se calcula fuera, para que sin keys/red todo siga funcionando.
+
+### Reproductor / streaming legal (Etapa 1)
+
+- `server/lib/origen.js`: `validarOrigen(origen, allowlist)` / `hostPermitido` — guardarraíl legal. `archive.org`/`*.archive.org`/`bt.archive.org` de confianza implícita; magnet solo pasa con webseed/tracker de host permitido. NO removible.
+- `server/lib/torrentes.js`: envoltura de WebTorrent (cliente único perezoso, `MAX_ACTIVOS=3`, datos en `server/cache/torrentes/`).
+- `server/routes/reproductor.js`: proxy búsqueda/metadatos de Internet Archive (con `conCache`).
+- `server/routes/stream.js`: `POST /torrent` (valida origen), `GET /torrent/:id/:indice` (HTTP range → 206), `GET /subtitulo` (SRT→VTT), `DELETE /torrent/:id`.
+- Cliente: `modules/reproducir/`, `components/Reproductor.jsx`, `lib/reproductor.js`; allowlist editable en Ajustes; `config.allowlist` en `GET/PUT /api/config`.
 
 ### Tests
 
