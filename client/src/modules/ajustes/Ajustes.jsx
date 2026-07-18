@@ -46,9 +46,15 @@ export default function Ajustes() {
   };
 
   const guardarAllowlist = async (lista) => {
+    const previo = hosts;
     setHosts(lista);
-    await api('/config', { method: 'PUT', body: { allowlist: lista } });
-    await recargar();
+    try {
+      await api('/config', { method: 'PUT', body: { allowlist: lista } });
+      await recargar();
+    } catch {
+      setHosts(previo);
+      setError('No se pudo actualizar la lista de fuentes permitidas.');
+    }
   };
   const agregarHost = () => {
     const h = nuevoHost.trim().toLowerCase();
@@ -116,6 +122,7 @@ export default function Ajustes() {
             </li>
           ))}
         </ul>
+        {error && <div className="aviso" style={{ marginTop: 12 }}>{error}</div>}
       </div>
     </div>
   );
