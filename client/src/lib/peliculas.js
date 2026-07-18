@@ -15,6 +15,7 @@ function aItem(p) {
   return {
     id: p.id,
     titulo: p.title,
+    tituloOriginal: p.original_title ?? p.title,
     anio: p.release_date ? Number(p.release_date.slice(0, 4)) : undefined,
     generos: p.genre_ids ?? [],
     rating: p.vote_average,

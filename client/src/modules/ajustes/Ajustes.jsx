@@ -14,20 +14,34 @@ export default function Ajustes() {
   const [region, setRegion] = useState(config?.region ?? 'MX');
   const [estado, setEstado] = useState('');
   const [prueba, setPrueba] = useState(null);
+  const [error, setError] = useState('');
 
   const guardar = async () => {
+    setError('');
     setEstado('guardando');
-    await api('/config', { method: 'PUT', body: { tmdbKey, omdbKey, region } });
-    await recargar();
-    setTmdbKey('');
-    setOmdbKey('');
-    setEstado('guardado');
+    try {
+      await api('/config', { method: 'PUT', body: { tmdbKey, omdbKey, region } });
+      await recargar();
+      setTmdbKey('');
+      setOmdbKey('');
+      setEstado('guardado');
+    } catch {
+      setError('No se pudo guardar la configuración.');
+    } finally {
+      setEstado('');
+    }
   };
 
   const probar = async () => {
+    setError('');
     setEstado('probando');
-    setPrueba(await api('/config/probar', { method: 'POST', body: {} }));
-    setEstado('');
+    try {
+      setPrueba(await api('/config/probar', { method: 'POST', body: {} }));
+    } catch {
+      setError('No se pudo probar la conexión.');
+    } finally {
+      setEstado('');
+    }
   };
 
   return (
@@ -58,6 +72,7 @@ export default function Ajustes() {
           <button className="boton boton-secundario" onClick={probar} disabled={estado === 'probando'}>Probar conexión</button>
         </div>
         {estado === 'guardado' && <p>✅ Guardado.</p>}
+        {error && <div className="aviso">{error}</div>}
         {prueba && (
           <p>
             TMDB: {prueba.tmdb ? '✅ funciona' : '❌ falla'} · OMDb: {prueba.omdb ? '✅ funciona' : '❌ falla'}

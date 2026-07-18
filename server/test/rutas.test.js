@@ -47,6 +47,6 @@ describe('rutas de config y datos', () => {
       .set('Content-Type', 'application/json')
       .send('{ esto no es json');
     expect(r.status).toBe(400);
-    expect(r.body).toEqual({ error: 'servidor', mensaje: 'Error interno del servidor.' });
+    expect(r.body).toEqual({ error: 'json-invalido', mensaje: 'Cuerpo JSON inválido.' });
   });
 });

@@ -18,9 +18,11 @@ Dashboard personal de entretenimiento **gratis, legal y en español**. Corre en 
 ## Instalación y uso (Windows)
 
 1. Descarga o clona este repositorio.
-2. **Doble clic en `Iniciar.bat`.** La primera vez instala todo solo (1-2 min) y abre el navegador.
+2. **Doble clic en `Iniciar.bat`.** La primera vez instala todo solo (1-2 min), compila la app y abre el navegador en [http://localhost:3001](http://localhost:3001) (modo producción).
 
 En cualquier sistema: `npm install` y luego `npm start`.
+
+Para desarrollo con recarga en vivo, usa `npm run dev` (disponible en [http://localhost:5173](http://localhost:5173)).
 
 ## API keys gratuitas (recomendado)
 

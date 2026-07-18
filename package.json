@@ -4,7 +4,7 @@
   "workspaces": ["server", "client"],
   "scripts": {
     "dev": "concurrently -n servidor,cliente -c blue,magenta \"npm run dev -w server\" \"npm run dev -w client\"",
-    "start": "npm run dev",
+    "start": "npm run build -w client && node server/index.js",
     "test": "npm test -w server && npm test -w client"
   },
   "devDependencies": {

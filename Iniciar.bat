@@ -1,4 +1,5 @@
 @echo off
+cd /d "%~dp0"
 chcp 65001 >nul
 title Mi Centro de Entretenimiento
 where node >nul 2>nul
@@ -15,5 +16,6 @@ if not exist node_modules (
   call npm install
 )
 echo  🎬 Iniciando Mi Centro de Entretenimiento...
-echo     El navegador se abrira solo. Para cerrar la app, cierra esta ventana.
-call npm run dev
+echo     El navegador se abrira solo en unos segundos. Para cerrar la app, cierra esta ventana.
+start "" cmd /c "timeout /t 8 >nul & start http://localhost:3001"
+call npm start

@@ -28,8 +28,8 @@ export default function NocheDeCine() {
       const diez = await Promise.all(
         top.slice(0, 10).map(async (p) => ({
           ...p,
-          proveedores: await dondeVer(p.id, config.region),
-          ratings: await ratingsDe(p.titulo, p.anio),
+          proveedores: await dondeVer(p.id, config?.region ?? 'MX'),
+          ratings: await ratingsDe(p.tituloOriginal ?? p.titulo, p.anio),
           porQue: porQueTeGustara(p, moodElegido),
         })),
       );
