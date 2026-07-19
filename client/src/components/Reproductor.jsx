@@ -10,7 +10,7 @@ export default function Reproductor({ fuente, onCerrar }) {
   const videoRef = useRef(null);
   const resumeAplicado = useRef(false);
 
-  useEffect(() => { setIndice(0); resumeAplicado.current = false; }, [fuente]);
+  useEffect(() => { setIndice(0); }, [fuente]);
 
   const reproducibles = fuente?.tipo === 'torrent'
     ? fuente.archivos.filter((a) => a.reproducible)
@@ -29,6 +29,7 @@ export default function Reproductor({ fuente, onCerrar }) {
   // Al cambiar de fuente/archivo activo: buscar progreso guardado y estado de "visto".
   useEffect(() => {
     if (!fuente) return;
+    resumeAplicado.current = false;
     let cancelado = false;
     obtenerBiblioteca().then((biblio) => {
       if (cancelado) return;
