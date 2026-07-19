@@ -62,9 +62,9 @@ describe('alternarGuardado', () => {
 });
 
 describe('alternarVisto', () => {
-  it('no hace nada si el origen nunca tuvo progreso', () => {
+  it('crea la entrada si el origen nunca tuvo progreso, en vez de perder la marca en silencio', () => {
     const datos = alternarVisto({}, 'fantasma', 0, true);
-    expect(datos).toEqual({});
+    expect(datos.fantasma.archivos[0]).toMatchObject({ visto: true, posicionSeg: 0, duracionSeg: 0 });
   });
 
   it('marca visto manualmente y no se revierte con progreso posterior bajo el umbral', () => {

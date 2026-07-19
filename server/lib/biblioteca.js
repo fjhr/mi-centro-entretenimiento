@@ -37,16 +37,23 @@ export function alternarGuardado(datos, origen, guardado, meta = {}) {
 }
 
 export function alternarVisto(datos, origen, indice, visto) {
-  const existente = datos[origen];
-  if (!existente) return datos;
   const ahora = new Date().toISOString();
-  const archivoExistente = existente.archivos[indice] ?? { posicionSeg: 0, duracionSeg: 0 };
+  const existente = datos[origen];
+  const archivoExistente = existente?.archivos?.[indice] ?? { posicionSeg: 0, duracionSeg: 0 };
+  const entrada = existente ?? {
+    titulo: '',
+    poster: null,
+    guardado: false,
+    primeraVez: ahora,
+    ultimaVez: ahora,
+    archivos: {},
+  };
   return {
     ...datos,
     [origen]: {
-      ...existente,
+      ...entrada,
       ultimaVez: ahora,
-      archivos: { ...existente.archivos, [indice]: { ...archivoExistente, visto, ultimaVez: ahora } },
+      archivos: { ...entrada.archivos, [indice]: { ...archivoExistente, visto, ultimaVez: ahora } },
     },
   };
 }

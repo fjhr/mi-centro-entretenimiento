@@ -38,7 +38,7 @@ export default function Reproductor({ fuente, onCerrar }) {
       const video = videoRef.current;
       if (!video || !archivo || archivo.posicionSeg <= 0) return;
       const aplicarResume = () => {
-        if (resumeAplicado.current) return;
+        if (cancelado || resumeAplicado.current) return;
         resumeAplicado.current = true;
         if (archivo.posicionSeg < video.duration) video.currentTime = archivo.posicionSeg;
       };
@@ -51,7 +51,7 @@ export default function Reproductor({ fuente, onCerrar }) {
 
   const guardarAhora = () => {
     const video = videoRef.current;
-    if (!fuente || !video || !video.duration || Number.isNaN(video.duration)) return;
+    if (!fuente || !video || !video.duration || Number.isNaN(video.duration) || !Number.isFinite(video.duration)) return;
     guardarProgreso({
       origen: fuente.origen,
       indice: indiceActivo,
@@ -70,7 +70,17 @@ export default function Reproductor({ fuente, onCerrar }) {
     return () => {
       clearInterval(id);
       window.removeEventListener('beforeunload', guardarAhora);
-      guardarAhora();
+      const video = videoRef.current;
+      if (video && video.duration && !Number.isNaN(video.duration) && Number.isFinite(video.duration)) {
+        guardarProgreso({
+          origen: fuente.origen,
+          indice: indiceActivo,
+          posicionSeg: video.currentTime,
+          duracionSeg: video.duration,
+          titulo: fuente.titulo,
+          poster: fuente.poster,
+        }).catch(() => {});
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fuente, indiceActivo]);

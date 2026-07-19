@@ -60,7 +60,7 @@ npx vitest run src/engine/recomendar.test.js  # desde client/
 
 ### Tests
 
-33 tests: servidor (contratos supertest: config no expone keys, path traversal, 503 falta-key, caché TTL/respaldo, errores en español) y cliente (motor de recomendación, planificador, contratos de peliculas.js con `vi.mock`). Los tests de servidor usan `mkdtemp` + `DIR_DATOS`/`DIR_CACHE`; seguir ese patrón de aislamiento.
+92 tests (61 servidor + 31 cliente): servidor (contratos supertest: config no expone keys, path traversal, 503 falta-key, caché TTL/respaldo, errores en español) y cliente (motor de recomendación, planificador, contratos de peliculas.js con `vi.mock`). Los tests de servidor usan `mkdtemp` + `DIR_DATOS`/`DIR_CACHE`; seguir ese patrón de aislamiento.
 
 ## Documentación de diseño
 
