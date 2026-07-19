@@ -24,3 +24,39 @@ export function urlStream(id, indice) {
 export function urlSubtitulo(url) {
   return `/api/stream/subtitulo?url=${encodeURIComponent(url)}`;
 }
+
+const RE_ID_IA = /^[A-Za-z0-9._-]+$/;
+
+export function pareceIdentificadorIA(origen) {
+  return RE_ID_IA.test(origen);
+}
+
+function errorSinReproducibles() {
+  return Object.assign(new Error('Sin archivos reproducibles'), { motivo: 'sin-reproducibles' });
+}
+
+export async function resolverIA(identificador) {
+  const meta = await abrirIA(identificador);
+  const video = meta.archivos.find((a) => a.esVideo) || meta.archivos.find((a) => a.esAudio);
+  if (video) {
+    return { tipo: 'directo', url: video.url, subtitulos: meta.subtitulos, metaTitulo: meta.titulo };
+  }
+  if (meta.torrent) {
+    const { id, archivos } = await abrirTorrent(meta.torrent);
+    if (!archivos.some((a) => a.reproducible)) {
+      await cerrarTorrent(id);
+      throw errorSinReproducibles();
+    }
+    return { tipo: 'torrent', id, archivos, subtitulos: meta.subtitulos, metaTitulo: meta.titulo };
+  }
+  throw errorSinReproducibles();
+}
+
+export async function resolverTorrentOrigen(origen) {
+  const { id, archivos } = await abrirTorrent(origen);
+  if (!archivos.some((a) => a.reproducible)) {
+    await cerrarTorrent(id);
+    throw errorSinReproducibles();
+  }
+  return { tipo: 'torrent', id, archivos };
+}
