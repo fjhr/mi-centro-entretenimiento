@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useConfig } from './context/ConfigContext.jsx';
+import Inicio from './modules/inicio/Inicio.jsx';
 import Ajustes from './modules/ajustes/Ajustes.jsx';
 import Fuentes from './modules/fuentes/Fuentes.jsx';
 import Reproducir from './modules/reproducir/Reproducir.jsx';
@@ -10,6 +11,7 @@ import Maraton from './modules/maraton/Maraton.jsx';
 import Curador from './modules/aprendizaje/Curador.jsx';
 
 const SECCIONES = [
+  ['inicio', '🏠 Inicio'],
   ['fuentes', '📺 Fuentes'],
   ['reproducir', '🎬 Reproducir'],
   ['cine', '🎬 Noche de Cine'],
@@ -21,6 +23,7 @@ const SECCIONES = [
 ];
 
 const MODULOS = {
+  inicio: Inicio,
   fuentes: Fuentes,
   reproducir: Reproducir,
   cine: NocheDeCine,
@@ -32,7 +35,7 @@ const MODULOS = {
 };
 
 export default function App() {
-  const [vista, setVista] = useState('fuentes');
+  const [vista, setVista] = useState('inicio');
   const { config } = useConfig();
   const Modulo = MODULOS[vista];
   return (
