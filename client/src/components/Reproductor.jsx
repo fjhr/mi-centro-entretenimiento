@@ -51,7 +51,7 @@ export default function Reproductor({ fuente, onCerrar }) {
 
   const guardarAhora = () => {
     const video = videoRef.current;
-    if (!fuente || !video || !video.duration || Number.isNaN(video.duration) || !Number.isFinite(video.duration)) return;
+    if (!fuente || !video || !Number.isFinite(video.duration) || !video.duration) return;
     guardarProgreso({
       origen: fuente.origen,
       indice: indiceActivo,
@@ -65,13 +65,13 @@ export default function Reproductor({ fuente, onCerrar }) {
   // Autoguardado periódico mientras hay una fuente activa.
   useEffect(() => {
     if (!fuente) return;
+    const video = videoRef.current;
     const id = setInterval(guardarAhora, INTERVALO_GUARDADO_MS);
     window.addEventListener('beforeunload', guardarAhora);
     return () => {
       clearInterval(id);
       window.removeEventListener('beforeunload', guardarAhora);
-      const video = videoRef.current;
-      if (video && video.duration && !Number.isNaN(video.duration) && Number.isFinite(video.duration)) {
+      if (video && video.duration && Number.isFinite(video.duration)) {
         guardarProgreso({
           origen: fuente.origen,
           indice: indiceActivo,
