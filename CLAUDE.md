@@ -52,9 +52,15 @@ npx vitest run src/engine/recomendar.test.js  # desde client/
 - `server/routes/stream.js`: `POST /torrent` (valida origen), `GET /torrent/:id/:indice` (HTTP range → 206), `GET /subtitulo` (SRT→VTT), `DELETE /torrent/:id`.
 - Cliente: `modules/reproducir/`, `components/Reproductor.jsx`, `lib/reproductor.js`; allowlist editable en Ajustes; `config.allowlist` en `GET/PUT /api/config`.
 
+### Biblioteca / continuar viendo (Etapa 2)
+
+- `server/lib/biblioteca.js`: lógica pura sobre un único store `{ [origen]: { titulo, poster, guardado, archivos: { [indice]: { posicionSeg, duracionSeg, visto } } } }`. `actualizarProgreso` marca `visto` automático al 90%; un override manual (`alternarVisto`) no se revierte por progreso posterior bajo el umbral. `continuarViendo`/`guardados`/`historial` son selectores puros, no colecciones separadas.
+- `server/routes/biblioteca.js`: `GET /api/biblioteca` (las tres listas + `entradas` crudo), `PUT /progreso`, `PUT /guardado`, `PUT /visto`, `DELETE /historial`.
+- Cliente: `lib/biblioteca.js` (helpers HTTP); `Reproductor.jsx` es autosuficiente — dado `fuente.origen/titulo/poster`, reanuda posición, autoguarda cada 10s (+pausa/cierre/beforeunload) y expone marcar-visto, sin que el módulo padre gestione persistencia. `resolverIA`/`resolverTorrentOrigen`/`pareceIdentificadorIA` en `lib/reproductor.js` traducen cualquier `origen` guardado de vuelta a una fuente reproducible. `modules/inicio/Inicio.jsx` es la pantalla de arranque.
+
 ### Tests
 
-33 tests: servidor (contratos supertest: config no expone keys, path traversal, 503 falta-key, caché TTL/respaldo, errores en español) y cliente (motor de recomendación, planificador, contratos de peliculas.js con `vi.mock`). Los tests de servidor usan `mkdtemp` + `DIR_DATOS`/`DIR_CACHE`; seguir ese patrón de aislamiento.
+92 tests (61 servidor + 31 cliente): servidor (contratos supertest: config no expone keys, path traversal, 503 falta-key, caché TTL/respaldo, errores en español) y cliente (motor de recomendación, planificador, contratos de peliculas.js con `vi.mock`). Los tests de servidor usan `mkdtemp` + `DIR_DATOS`/`DIR_CACHE`; seguir ese patrón de aislamiento.
 
 ## Documentación de diseño
 

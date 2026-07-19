@@ -8,6 +8,7 @@ import tmdbRouter from './routes/tmdb.js';
 import omdbRouter from './routes/omdb.js';
 import reproductorRouter from './routes/reproductor.js';
 import streamRouter from './routes/stream.js';
+import bibliotecaRouter from './routes/biblioteca.js';
 
 const aqui = path.dirname(fileURLToPath(import.meta.url));
 const dirDist = path.join(aqui, '..', 'client', 'dist');
@@ -21,6 +22,7 @@ export function crearApp() {
   app.use('/api/omdb', omdbRouter);
   app.use('/api/reproductor', reproductorRouter);
   app.use('/api/stream', streamRouter);
+  app.use('/api/biblioteca', bibliotecaRouter);
 
   if (fs.existsSync(dirDist)) {
     app.use(express.static(dirDist));

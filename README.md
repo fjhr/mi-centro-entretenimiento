@@ -19,6 +19,10 @@ El reproductor solo descarga desde webseeds (servidores HTTP permitidos), nunca 
 
 > Por diseño, un magnet sin origen verificable (solo infohash y trackers públicos) se rechaza: la app reproduce Internet Archive y las fuentes legales que tú autorices, no es un buscador de contenido con copyright.
 
+## 🏠 Inicio — continuar viendo y biblioteca
+
+La pantalla de Inicio recuerda dónde te quedaste: reanuda automáticamente la posición de cualquier título, marca lo que ya viste (o márcalo tú manualmente), y te deja guardar tus favoritos en "Mi biblioteca". El historial se puede limpiar en cualquier momento sin perder lo guardado.
+
 ## Requisitos
 
 - [Node.js](https://nodejs.org/es) 18 o superior (gratis).
