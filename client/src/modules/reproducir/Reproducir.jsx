@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Reproductor from '../../components/Reproductor.jsx';
-import { buscarIA, abrirIA, abrirTorrent, cerrarTorrent, MOTIVOS } from '../../lib/reproductor.js';
+import { resolverIA, resolverTorrentOrigen, cerrarTorrent, MOTIVOS, buscarIA } from '../../lib/reproductor.js';
+import { alternarGuardado } from '../../lib/biblioteca.js';
 
 export default function Reproducir() {
   const [q, setQ] = useState('');
@@ -9,6 +10,7 @@ export default function Reproducir() {
   const [error, setError] = useState(null);
   const [fuente, setFuente] = useState(null);
   const [origen, setOrigen] = useState('');
+  const [guardados, setGuardados] = useState({});
   const torrentActivo = useRef(null);
 
   const limpiarTorrent = () => {
@@ -32,47 +34,47 @@ export default function Reproducir() {
 
   const cerrarReproductor = () => { limpiarTorrent(); setFuente(null); };
 
-  const reproducirIA = async (id) => {
+  const reproducirIA = async (resultado) => {
     setError(null); cerrarReproductor();
     try {
-      const meta = await abrirIA(id);
-      const video = meta.archivos.find((a) => a.esVideo) || meta.archivos.find((a) => a.esAudio);
-      if (video) {
-        setFuente({ tipo: 'directo', url: video.url, subtitulos: meta.subtitulos });
-      } else if (meta.torrent) {
-        const { id: tid, archivos } = await abrirTorrent(meta.torrent);
-        const tieneReproducible = archivos.some((a) => a.reproducible);
-        if (!tieneReproducible) {
-          cerrarTorrent(tid);
-          setError('Este torrent no tiene archivos reproducibles.');
-        } else {
-          torrentActivo.current = tid;
-          setFuente({ tipo: 'torrent', id: tid, archivos, subtitulos: meta.subtitulos });
-        }
-      } else {
-        setError('Este elemento no tiene archivos reproducibles.');
-      }
+      const base = await resolverIA(resultado.identificador);
+      if (base.tipo === 'torrent') torrentActivo.current = base.id;
+      setFuente({
+        ...base,
+        origen: resultado.identificador,
+        titulo: resultado.titulo || base.metaTitulo || resultado.identificador,
+        poster: resultado.miniatura ?? null,
+      });
     } catch (err) {
-      setError('No se pudo abrir el contenido.');
+      setError(err.motivo === 'sin-reproducibles' ? 'Este elemento no tiene archivos reproducibles.' : 'No se pudo abrir el contenido.');
     }
   };
 
   const reproducirOrigen = async (e) => {
     e?.preventDefault();
     if (!origen.trim()) return;
+    const valor = origen.trim();
     setError(null); cerrarReproductor();
     try {
-      const { id, archivos } = await abrirTorrent(origen.trim());
-      const tieneReproducible = archivos.some((a) => a.reproducible);
-      if (!tieneReproducible) {
-        cerrarTorrent(id);
-        setError('Este torrent no tiene archivos reproducibles.');
-      } else {
-        torrentActivo.current = id;
-        setFuente({ tipo: 'torrent', id, archivos });
-      }
+      const base = await resolverTorrentOrigen(valor);
+      torrentActivo.current = base.id;
+      setFuente({ ...base, origen: valor, titulo: valor, poster: null });
     } catch (err) {
-      setError(MOTIVOS[err.motivo || err.codigo] || 'No se pudo abrir el origen. Revisa que esté en tu lista de fuentes permitidas (Ajustes).');
+      setError(
+        err.motivo === 'sin-reproducibles'
+          ? 'Este torrent no tiene archivos reproducibles.'
+          : MOTIVOS[err.motivo || err.codigo] || 'No se pudo abrir el origen. Revisa que esté en tu lista de fuentes permitidas (Ajustes).',
+      );
+    }
+  };
+
+  const alternarGuardadoResultado = async (resultado) => {
+    const nuevo = !guardados[resultado.identificador];
+    setGuardados((g) => ({ ...g, [resultado.identificador]: nuevo }));
+    try {
+      await alternarGuardado(resultado.identificador, nuevo, { titulo: resultado.titulo, poster: resultado.miniatura });
+    } catch {
+      setGuardados((g) => ({ ...g, [resultado.identificador]: !nuevo }));
     }
   };
 
@@ -98,10 +100,20 @@ export default function Reproducir() {
       {resultados.length > 0 && (
         <div className="cuadricula" style={{ marginTop: 16 }}>
           {resultados.map((r) => (
-            <div className="tarjeta" key={r.identificador} style={{ cursor: 'pointer' }} onClick={() => reproducirIA(r.identificador)}>
-              <img className="poster" src={r.miniatura} alt={r.titulo} loading="lazy" style={{ aspectRatio: '1', objectFit: 'cover' }} onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }} />
-              <h4 style={{ margin: '8px 0 2px' }}>{r.titulo}</h4>
+            <div className="tarjeta" key={r.identificador}>
+              <img
+                className="poster" src={r.miniatura} alt={r.titulo} loading="lazy"
+                style={{ aspectRatio: '1', objectFit: 'cover', cursor: 'pointer' }}
+                onClick={() => reproducirIA(r)}
+                onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
+              />
+              <h4 style={{ margin: '8px 0 2px', cursor: 'pointer' }} onClick={() => reproducirIA(r)}>{r.titulo}</h4>
               <span className="texto-suave">{r.tipo}{r.anio ? ` · ${r.anio}` : ''}</span>
+              <div style={{ marginTop: 8 }}>
+                <button className="chip" onClick={() => alternarGuardadoResultado(r)}>
+                  {guardados[r.identificador] ? '✔ Guardada' : '💾 Guardar'}
+                </button>
+              </div>
             </div>
           ))}
         </div>
