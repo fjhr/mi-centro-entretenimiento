@@ -23,6 +23,7 @@ export default function Reproducir() {
   const [qAnime, setQAnime] = useState('');
   const [resultadosAnime, setResultadosAnime] = useState([]);
   const [cargandoAnime, setCargandoAnime] = useState(false);
+  const [errorAnime, setErrorAnime] = useState(null);
 
   const limpiarTorrent = () => {
     if (torrentActivo.current) { cerrarTorrent(torrentActivo.current); torrentActivo.current = null; }
@@ -46,12 +47,12 @@ export default function Reproducir() {
   const buscarAnimeForm = async (e) => {
     e?.preventDefault();
     if (!qAnime.trim()) return;
-    setCargandoAnime(true); setError(null);
+    setCargandoAnime(true); setErrorAnime(null);
     try {
       const r = await buscarAnime(qAnime);
       setResultadosAnime(r.resultados);
     } catch {
-      setError('No se pudo buscar en AniList.');
+      setErrorAnime('No se pudo buscar en AniList.');
     } finally {
       setCargandoAnime(false);
     }
@@ -162,7 +163,7 @@ export default function Reproducir() {
             <button className="boton" disabled={cargandoAnime}>{cargandoAnime ? 'Buscando…' : 'Buscar'}</button>
           </form>
 
-          {error && <div className="aviso" style={{ marginTop: 12 }}>{error}</div>}
+          {errorAnime && <div className="aviso" style={{ marginTop: 12 }}>{errorAnime}</div>}
 
           {resultadosAnime.length > 0 && (
             <div className="cuadricula" style={{ marginTop: 16 }}>
