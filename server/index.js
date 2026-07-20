@@ -9,6 +9,7 @@ import omdbRouter from './routes/omdb.js';
 import reproductorRouter from './routes/reproductor.js';
 import streamRouter from './routes/stream.js';
 import bibliotecaRouter from './routes/biblioteca.js';
+import anilistRouter from './routes/anilist.js';
 
 const aqui = path.dirname(fileURLToPath(import.meta.url));
 const dirDist = path.join(aqui, '..', 'client', 'dist');
@@ -23,6 +24,7 @@ export function crearApp() {
   app.use('/api/reproductor', reproductorRouter);
   app.use('/api/stream', streamRouter);
   app.use('/api/biblioteca', bibliotecaRouter);
+  app.use('/api/anilist', anilistRouter);
 
   if (fs.existsSync(dirDist)) {
     app.use(express.static(dirDist));
