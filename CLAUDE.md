@@ -58,9 +58,15 @@ npx vitest run src/engine/recomendar.test.js  # desde client/
 - `server/routes/biblioteca.js`: `GET /api/biblioteca` (las tres listas + `entradas` crudo), `PUT /progreso`, `PUT /guardado`, `PUT /visto`, `DELETE /historial`.
 - Cliente: `lib/biblioteca.js` (helpers HTTP); `Reproductor.jsx` es autosuficiente — dado `fuente.origen/titulo/poster`, reanuda posición, autoguarda cada 10s (+pausa/cierre/beforeunload) y expone marcar-visto, sin que el módulo padre gestione persistencia. `resolverIA`/`resolverTorrentOrigen`/`pareceIdentificadorIA` en `lib/reproductor.js` traducen cualquier `origen` guardado de vuelta a una fuente reproducible. `modules/inicio/Inicio.jsx` es la pantalla de arranque.
 
+### Anime con AniList (Etapa 3)
+
+- `server/routes/anilist.js`: proxy con caché al GraphQL público de AniList (`/buscar`, `/:id`, `/calendario`, `/tendencias`). Las rutas literales van ANTES que `/:id` en el archivo — si no, Express les daría prioridad al parámetro. Nunca reproduce nada; solo metadatos.
+- `client/src/lib/anilist.js`: helpers HTTP + `fuentesLegalesDe(titulo, region)`, que filtra `catalog/fuentes.json` (categoría `anime`) y genera enlaces de búsqueda de Google (mismo patrón que `busquedaPara` de `ModoNetflix.jsx`).
+- `client/src/components/FichaAnime.jsx`: componente autosuficiente (como `Reproductor.jsx`) — dado `{anime, region, episodioInicial?, episodioFijo?}`, gestiona guardar/visto/apertura de fuente por sí solo. Al abrir una fuente registra progreso con `duracionSeg:1200, posicionSeg:1` (nunca `1/1`) para no disparar el umbral automático de "visto" del 90% (Etapa 2). Reutilizado en `modules/anime/Anime.jsx`, la pestaña Anime de `modules/reproducir/Reproducir.jsx`, e `Inicio.jsx` (orígenes `anilist:` muestran la ficha en vez de abrir el reproductor de video).
+
 ### Tests
 
-92 tests (61 servidor + 31 cliente): servidor (contratos supertest: config no expone keys, path traversal, 503 falta-key, caché TTL/respaldo, errores en español) y cliente (motor de recomendación, planificador, contratos de peliculas.js con `vi.mock`). Los tests de servidor usan `mkdtemp` + `DIR_DATOS`/`DIR_CACHE`; seguir ese patrón de aislamiento.
+104 tests (68 servidor + 36 cliente): servidor (contratos supertest: config no expone keys, path traversal, 503 falta-key, caché TTL/respaldo, errores en español, contratos de AniList) y cliente (motor de recomendación, planificador, contratos de peliculas.js con `vi.mock`). Los tests de servidor usan `mkdtemp` + `DIR_DATOS`/`DIR_CACHE`; seguir ese patrón de aislamiento.
 
 ## Documentación de diseño
 

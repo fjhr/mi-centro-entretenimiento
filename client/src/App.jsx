@@ -4,6 +4,7 @@ import Inicio from './modules/inicio/Inicio.jsx';
 import Ajustes from './modules/ajustes/Ajustes.jsx';
 import Fuentes from './modules/fuentes/Fuentes.jsx';
 import Reproducir from './modules/reproducir/Reproducir.jsx';
+import Anime from './modules/anime/Anime.jsx';
 import NocheDeCine from './modules/cine/NocheDeCine.jsx';
 import QueVeo from './modules/queveo/QueVeo.jsx';
 import ModoNetflix from './modules/semanal/ModoNetflix.jsx';
@@ -14,6 +15,7 @@ const SECCIONES = [
   ['inicio', '🏠 Inicio'],
   ['fuentes', '📺 Fuentes'],
   ['reproducir', '🎬 Reproducir'],
+  ['anime', '🎌 Anime'],
   ['cine', '🎬 Noche de Cine'],
   ['semanal', '🗓️ Modo Netflix'],
   ['maraton', '🍿 Maratón'],
@@ -26,6 +28,7 @@ const MODULOS = {
   inicio: Inicio,
   fuentes: Fuentes,
   reproducir: Reproducir,
+  anime: Anime,
   cine: NocheDeCine,
   semanal: ModoNetflix,
   maraton: Maraton,

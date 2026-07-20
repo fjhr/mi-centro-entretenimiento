@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import Reproductor from '../../components/Reproductor.jsx';
+import FichaAnime from '../../components/FichaAnime.jsx';
 import { obtenerBiblioteca, alternarGuardado, limpiarHistorial } from '../../lib/biblioteca.js';
 import { resolverIA, resolverTorrentOrigen, pareceIdentificadorIA, cerrarTorrent } from '../../lib/reproductor.js';
+import { useConfig } from '../../context/ConfigContext.jsx';
 
 function progresoDe(item) {
   const archivos = Object.values(item.archivos ?? {});
@@ -10,10 +12,17 @@ function progresoDe(item) {
   return Math.min(100, Math.round((activo.posicionSeg / activo.duracionSeg) * 100));
 }
 
+function episodioActivoDe(item) {
+  const entradas = Object.entries(item.archivos ?? {});
+  if (entradas.length === 0) return undefined;
+  const [indice] = entradas.sort((a, b) => new Date(b[1].ultimaVez) - new Date(a[1].ultimaVez))[0];
+  return Number(indice);
+}
+
 function TarjetaItem({ item, onAbrir, onGuardar }) {
   const pct = progresoDe(item);
   return (
-    <div className="tarjeta tarjeta-mini" key={item.origen}>
+    <div className="tarjeta tarjeta-mini">
       <div style={{ cursor: 'pointer' }} onClick={() => onAbrir(item)}>
         {item.poster
           ? <img className="poster" src={item.poster} alt={item.titulo} loading="lazy" />
@@ -44,8 +53,11 @@ function Fila({ titulo, items, onAbrir, onGuardar, extra }) {
 }
 
 export default function Inicio() {
+  const { config } = useConfig();
+  const region = config?.region ?? 'MX';
   const [biblio, setBiblio] = useState({ continuarViendo: [], guardados: [], historial: [] });
   const [fuente, setFuente] = useState(null);
+  const [animeActivo, setAnimeActivo] = useState(null);
   const [error, setError] = useState(null);
   const torrentActivo = useRef(null);
 
@@ -60,7 +72,14 @@ export default function Inicio() {
   const cerrarReproductor = () => { limpiarTorrent(); setFuente(null); cargar(); };
 
   const abrir = async (item) => {
-    setError(null); limpiarTorrent(); setFuente(null);
+    setError(null);
+    if (item.origen.startsWith('anilist:')) {
+      limpiarTorrent(); setFuente(null);
+      setAnimeActivo(item);
+      return;
+    }
+    setAnimeActivo(null);
+    limpiarTorrent(); setFuente(null);
     try {
       const base = pareceIdentificadorIA(item.origen)
         ? await resolverIA(item.origen)
@@ -106,12 +125,31 @@ export default function Inicio() {
       {!destacado && (
         <div>
           <h2>🏠 Inicio</h2>
-          <p className="texto-suave">Aún no has empezado nada. Ve a <b>🎬 Reproducir</b> para buscar en Internet Archive o abrir un origen permitido.</p>
+          <p className="texto-suave">Aún no has empezado nada. Ve a <b>🎬 Reproducir</b> o <b>🎌 Anime</b> para descubrir algo.</p>
         </div>
       )}
 
       {error && <div className="aviso" style={{ marginTop: 12 }}>{error}</div>}
       {fuente && <Reproductor fuente={fuente} onCerrar={cerrarReproductor} />}
+      {animeActivo && (
+        <div style={{ marginTop: 16 }}>
+          <button className="chip" onClick={() => { setAnimeActivo(null); cargar(); }}>✕ Cerrar</button>
+          <FichaAnime
+            anime={{
+              id: Number(animeActivo.origen.slice('anilist:'.length)),
+              titulo: animeActivo.titulo,
+              portada: animeActivo.poster,
+              episodios: null,
+              anio: null,
+              formato: null,
+              estudio: null,
+              generos: [],
+            }}
+            region={region}
+            episodioInicial={episodioActivoDe(animeActivo)}
+          />
+        </div>
+      )}
 
       <Fila titulo="Continuar viendo" items={biblio.continuarViendo} onAbrir={abrir} onGuardar={guardar} />
       <Fila titulo="Mi biblioteca" items={biblio.guardados} onAbrir={abrir} onGuardar={guardar} />

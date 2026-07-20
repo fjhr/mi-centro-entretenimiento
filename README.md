@@ -23,6 +23,10 @@ El reproductor solo descarga desde webseeds (servidores HTTP permitidos), nunca 
 
 La pantalla de Inicio recuerda dónde te quedaste: reanuda automáticamente la posición de cualquier título, marca lo que ya viste (o márcalo tú manualmente), y te deja guardar tus favoritos en "Mi biblioteca". El historial se puede limpiar en cualquier momento sin perder lo guardado.
 
+## 🎌 Anime — descubrimiento con AniList
+
+Calendario de próximos episodios, tendencias de temporada y un buscador con fichas ricas (sinopsis, estudio, géneros), todo con datos de [AniList](https://anilist.co). Como AniList y las plataformas de anime no ofrecen streams reproducibles, "Ver en {fuente}" abre la plataforma legal en una pestaña nueva — Crunchyroll, RetroCrush, AnimeOnegai, Pluto TV Anime, canales oficiales de YouTube (Toei, TMS Anime Latino, Anime Log, Crunchyroll), Tivify (España) y Bilibili Global, según tu región. Al abrir una fuente se registra en tu historial automáticamente; guardarlo en tu biblioteca (💾) y marcarlo como visto (✔) siguen siendo acciones manuales.
+
 ## Requisitos
 
 - [Node.js](https://nodejs.org/es) 18 o superior (gratis).
