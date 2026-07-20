@@ -133,7 +133,7 @@ export default function Inicio() {
       {fuente && <Reproductor fuente={fuente} onCerrar={cerrarReproductor} />}
       {animeActivo && (
         <div style={{ marginTop: 16 }}>
-          <button className="chip" onClick={() => setAnimeActivo(null)}>✕ Cerrar</button>
+          <button className="chip" onClick={() => { setAnimeActivo(null); cargar(); }}>✕ Cerrar</button>
           <FichaAnime
             anime={{
               id: Number(animeActivo.origen.slice('anilist:'.length)),

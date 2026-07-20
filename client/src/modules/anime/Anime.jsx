@@ -20,6 +20,7 @@ export default function Anime() {
   const [resultados, setResultados] = useState([]);
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
+  const [errorBuscador, setErrorBuscador] = useState(null);
 
   useEffect(() => {
     if (panel === 'calendario' && calendario.length === 0) {
@@ -42,12 +43,12 @@ export default function Anime() {
   const buscar = async (e) => {
     e?.preventDefault();
     if (!q.trim()) return;
-    setCargando(true); setError(null);
+    setCargando(true); setErrorBuscador(null);
     try {
       const r = await buscarAnime(q);
       setResultados(r.resultados);
     } catch {
-      setError('No se pudo buscar en AniList.');
+      setErrorBuscador('No se pudo buscar en AniList.');
     } finally {
       setCargando(false);
     }
@@ -65,25 +66,28 @@ export default function Anime() {
         ))}
       </div>
 
-      {error && <div className="aviso" style={{ marginTop: 12 }}>{error}</div>}
       {cargando && <p className="texto-suave">Cargando…</p>}
 
       {panel === 'calendario' && !cargando && (
-        <div className="cuadricula" style={{ marginTop: 16 }}>
-          {calendario.map((item) => (
-            <FichaAnime
-              key={`${item.id}-${item.episodio}`}
-              anime={{ id: item.id, titulo: item.titulo, portada: item.portada, episodios: null, anio: null, formato: null, estudio: null, generos: [] }}
-              region={region}
-              episodioInicial={item.episodio}
-              episodioFijo
-            />
-          ))}
-        </div>
+        <>
+          {error && <div className="aviso" style={{ marginTop: 12 }}>{error}</div>}
+          <div className="cuadricula" style={{ marginTop: 16 }}>
+            {calendario.map((item) => (
+              <FichaAnime
+                key={`${item.id}-${item.episodio}`}
+                anime={{ id: item.id, titulo: item.titulo, portada: item.portada, episodios: null, anio: null, formato: null, estudio: null, generos: [] }}
+                region={region}
+                episodioInicial={item.episodio}
+                episodioFijo
+              />
+            ))}
+          </div>
+        </>
       )}
 
       {panel === 'tendencias' && !cargando && (
         <>
+          {error && <div className="aviso" style={{ marginTop: 12 }}>{error}</div>}
           <h3 style={{ marginTop: 16 }}>Esta temporada</h3>
           <div className="cuadricula">
             {tendenciasTemporada.map((a) => <FichaAnime key={a.id} anime={a} region={region} />)}
@@ -101,6 +105,7 @@ export default function Anime() {
             <input placeholder="Buscar anime…" value={q} onChange={(e) => setQ(e.target.value)} style={{ flex: 1 }} />
             <button className="boton">Buscar</button>
           </form>
+          {errorBuscador && <div className="aviso" style={{ marginTop: 12 }}>{errorBuscador}</div>}
           <div className="cuadricula" style={{ marginTop: 16 }}>
             {resultados.map((a) => <FichaAnime key={a.id} anime={a} region={region} />)}
           </div>

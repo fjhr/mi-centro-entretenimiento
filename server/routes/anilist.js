@@ -40,8 +40,9 @@ function mapMedia(m) {
 function temporadaActual() {
   const ahora = new Date();
   const mes = ahora.getMonth();
+  if (mes === 11) return { season: 'WINTER', year: ahora.getFullYear() + 1 };
   let season;
-  if (mes === 11 || mes <= 1) season = 'WINTER';
+  if (mes <= 1) season = 'WINTER';
   else if (mes <= 4) season = 'SPRING';
   else if (mes <= 7) season = 'SUMMER';
   else season = 'FALL';

@@ -25,7 +25,7 @@ La pantalla de Inicio recuerda dónde te quedaste: reanuda automáticamente la p
 
 ## 🎌 Anime — descubrimiento con AniList
 
-Calendario de próximos episodios, tendencias de temporada y un buscador con fichas ricas (sinopsis, estudio, géneros), todo con datos de [AniList](https://anilist.co). Como AniList y las plataformas de anime no ofrecen streams reproducibles, "Ver en {fuente}" abre la plataforma legal en una pestaña nueva — Crunchyroll, RetroCrush, AnimeOnegai, Pluto TV Anime, canales oficiales de YouTube (Toei, TMS Anime Latino, Anime Log, Crunchyroll), Tivify (España) y Bilibili Global, según tu región. Se guarda automáticamente en tu biblioteca al abrir una fuente; marcar como visto es siempre manual.
+Calendario de próximos episodios, tendencias de temporada y un buscador con fichas ricas (sinopsis, estudio, géneros), todo con datos de [AniList](https://anilist.co). Como AniList y las plataformas de anime no ofrecen streams reproducibles, "Ver en {fuente}" abre la plataforma legal en una pestaña nueva — Crunchyroll, RetroCrush, AnimeOnegai, Pluto TV Anime, canales oficiales de YouTube (Toei, TMS Anime Latino, Anime Log, Crunchyroll), Tivify (España) y Bilibili Global, según tu región. Al abrir una fuente se registra en tu historial automáticamente; guardarlo en tu biblioteca (💾) y marcarlo como visto (✔) siguen siendo acciones manuales.
 
 ## Requisitos
 
