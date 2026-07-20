@@ -114,16 +114,22 @@ export default function Inicio() {
   return (
     <div>
       {destacado && (
-        <div className="hero" style={destacado.poster ? { backgroundImage: `linear-gradient(to top, var(--fondo), transparent 60%), url(${destacado.poster})` } : undefined}>
-          <div className="hero-texto">
-            <h2 style={{ margin: '0 0 8px' }}>{destacado.titulo || destacado.origen}</h2>
-            <p className="texto-suave">Continuar viendo — {progresoDe(destacado)}% completado</p>
+        <div className="hero">
+          {destacado.poster && <div className="hero-backdrop" style={{ backgroundImage: `url(${destacado.poster})` }} />}
+          <div className="hero-scrim" />
+          <div className="hero-panel">
+            <span className="hero-eyebrow">Continuar viendo</span>
+            <h2 className="hero-titulo">{destacado.titulo || destacado.origen}</h2>
+            <div className="hero-progreso">
+              <div className="hero-progreso-barra" style={{ width: `${progresoDe(destacado)}%` }} />
+            </div>
+            <p className="texto-suave hero-meta">{progresoDe(destacado)}% completado</p>
             <button className="boton" onClick={() => abrir(destacado)}>▶ Continuar</button>
           </div>
         </div>
       )}
       {!destacado && (
-        <div>
+        <div className="hero-vacio">
           <h2>🏠 Inicio</h2>
           <p className="texto-suave">Aún no has empezado nada. Ve a <b>🎬 Reproducir</b> o <b>🎌 Anime</b> para descubrir algo.</p>
         </div>

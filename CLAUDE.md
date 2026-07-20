@@ -64,15 +64,30 @@ npx vitest run src/engine/recomendar.test.js  # desde client/
 - `client/src/lib/anilist.js`: helpers HTTP + `fuentesLegalesDe(titulo, region)`, que filtra `catalog/fuentes.json` (categoría `anime`) y genera enlaces de búsqueda de Google (mismo patrón que `busquedaPara` de `ModoNetflix.jsx`).
 - `client/src/components/FichaAnime.jsx`: componente autosuficiente (como `Reproductor.jsx`) — dado `{anime, region, episodioInicial?, episodioFijo?}`, gestiona guardar/visto/apertura de fuente por sí solo. Al abrir una fuente registra progreso con `duracionSeg:1200, posicionSeg:1` (nunca `1/1`) para no disparar el umbral automático de "visto" del 90% (Etapa 2). Reutilizado en `modules/anime/Anime.jsx`, la pestaña Anime de `modules/reproducir/Reproducir.jsx`, e `Inicio.jsx` (orígenes `anilist:` muestran la ficha en vez de abrir el reproductor de video).
 
+### Sistema de diseño (rediseño visual 2026-07-20)
+
+Rediseño aplicado directamente sobre `client/src/styles.css` (vía skill `frontend-design`, no pasó por el flujo formal spec→plan→SDD; sin ledger ni commit de diseño propio). Cambia nombres de variables CSS — **cualquier código nuevo debe usar los nombres actuales, no los de las Etapas 0-3**:
+
+- Tokens: `--bg`/`--surface`/`--surface-glass` (superficies), `--ink`/`--ink-muted` (texto), `--accent` (coral `#FF6B4A`, reemplaza el rojo `--acento` de antes), `--accent-2` (periwinkle `#7C9CFF`, para progreso/foco), `--radius`/`--radius-sm`/`--radius-pill`, `--fuente-display` (Space Grotesk) / `--fuente-cuerpo` (Inter).
+- Fuentes cargadas por `<link>` a Google Fonts en `client/index.html` (requiere red la primera vez; el navegador las cachea después). Si el proyecto alguna vez necesita funcionar 100% offline, esto habría que revisarlo.
+- El Hero de `Inicio.jsx` ya NO es un solo `<div className="hero">` con `background-image` — ahora son 3 capas: `.hero-backdrop` (imagen desenfocada absoluta), `.hero-scrim` (degradado), `.hero-panel` (vidrio con `backdrop-filter: blur`, contiene el texto). Cualquier otro módulo que quiera un hero similar debe replicar esta estructura de 3 capas, no un solo div.
+- El resto de módulos (Fuentes, Reproducir, Anime, etc.) no se tocaron — heredan el nuevo look automáticamente porque comparten las clases `.tarjeta`/`.chip`/`.boton`/`.poster` ya existentes.
+
 ### Tests
 
 104 tests (68 servidor + 36 cliente): servidor (contratos supertest: config no expone keys, path traversal, 503 falta-key, caché TTL/respaldo, errores en español, contratos de AniList) y cliente (motor de recomendación, planificador, contratos de peliculas.js con `vi.mock`). Los tests de servidor usan `mkdtemp` + `DIR_DATOS`/`DIR_CACHE`; seguir ese patrón de aislamiento.
 
 ## Documentación de diseño
 
-- Spec: `docs/superpowers/specs/2026-07-17-mi-centro-entretenimiento-design.md`
-- Plan de implementación ejecutado: `docs/superpowers/plans/2026-07-17-mi-centro-entretenimiento.md`
-- Ledger de progreso y hallazgos aceptados: `.superpowers/sdd/progress.md` (gitignored)
+Specs y planes de cada etapa (todos en `docs/superpowers/`, patrón `YYYY-MM-DD-<tema>[-design].md`):
+
+- **Etapa 0** (base): `specs/2026-07-17-mi-centro-entretenimiento-design.md` · `plans/2026-07-17-mi-centro-entretenimiento.md`
+- **Etapa 1** (reproductor/streaming legal): `specs/2026-07-18-reproductor-streaming-legal-design.md` · `plans/2026-07-18-reproductor-streaming-legal.md`
+- **Etapa 2** (biblioteca/continuar viendo): `specs/2026-07-19-ux-hayase-etapa2-design.md` · `plans/2026-07-19-ux-hayase-etapa2.md`
+- **Etapa 3** (anime/AniList): `specs/2026-07-19-anime-anilist-etapa3-design.md` · `plans/2026-07-19-anime-anilist-etapa3.md`
+- El rediseño visual (2026-07-20) no tiene spec/plan propio — ver sección "Sistema de diseño" arriba.
+
+Ledger de progreso y hallazgos aceptados de la ejecución SDD: `.superpowers/sdd/progress.md` (gitignored).
 
 ## Notas operativas
 

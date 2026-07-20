@@ -44,7 +44,7 @@ export default function App() {
   return (
     <>
       <nav className="lateral">
-        <h1>🎬 Mi Centro</h1>
+        <h1>🎬 Mi <span className="marca-acento">Centro</span><small>de entretenimiento</small></h1>
         {SECCIONES.map(([clave, nombre]) => (
           <button key={clave} className={vista === clave ? 'activo' : ''} onClick={() => setVista(clave)}>
             {nombre}
