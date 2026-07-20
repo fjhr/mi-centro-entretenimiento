@@ -21,6 +21,66 @@
   { "nombre": "RetroCrush", "url": "https://www.retrocrush.tv", "categoria": "anime", "mejorPara": "Anime clásico de los 80s y 90s gratis", "registro": false, "regiones": ["MX", "US", "*"], "anuncios": true, "consejoPremium": "Perfecto para ver los clásicos que todos citan y nunca viste completos." },
   { "nombre": "AnimeOnegai", "url": "https://www.animeonegai.com", "categoria": "anime", "mejorPara": "Anime con doblaje latino, plan gratuito con anuncios", "registro": true, "regiones": ["MX", "CO", "AR", "PE", "CL"], "anuncios": true, "consejoPremium": "Especialistas en doblaje latino de series que nadie más trae legalmente." },
   { "nombre": "Pluto TV Anime", "url": "https://pluto.tv", "categoria": "anime", "mejorPara": "Canales 24/7 de anime doblado (Naruto, caballeros del zodiaco, etc.)", "registro": false, "regiones": "*", "anuncios": true, "consejoPremium": "Ideal como 'canal de fondo'; para elegir episodio usa la sección bajo demanda." },
+  {
+    "nombre": "Toei Animation (YouTube oficial)",
+    "url": "https://www.youtube.com/@ToeiAnimation",
+    "categoria": "anime",
+    "mejorPara": "Episodios completos oficiales de Dragon Ball, One Piece, Sailor Moon y más, sub y doblado",
+    "registro": false,
+    "regiones": "*",
+    "anuncios": true,
+    "consejoPremium": "Sube contenido directo del estudio; revisa la sección 'Episodios completos' de cada canal regional."
+  },
+  {
+    "nombre": "TMS Anime Latino",
+    "url": "https://www.youtube.com/@TMSAnimeLatino",
+    "categoria": "anime",
+    "mejorPara": "Anime doblado al español latino, canal oficial con más de 1.3M de suscriptores",
+    "registro": false,
+    "regiones": "*",
+    "anuncios": true,
+    "consejoPremium": "Busca las listas de reproducción por serie completa en vez de navegar episodio por episodio."
+  },
+  {
+    "nombre": "Anime Log",
+    "url": "https://www.youtube.com/@AnimeLog",
+    "categoria": "anime",
+    "mejorPara": "Anime clásico de estudios japoneses subido gratis y legal por los propios estudios",
+    "registro": false,
+    "regiones": "*",
+    "anuncios": true,
+    "consejoPremium": "Varios estudios japoneses se unieron aquí para liberar catálogo histórico; ideal para clásicos difíciles de encontrar."
+  },
+  {
+    "nombre": "Crunchyroll (YouTube oficial)",
+    "url": "https://www.youtube.com/@Crunchyroll",
+    "categoria": "anime",
+    "mejorPara": "Episodios sueltos y adelantos gratis fuera de la app principal de Crunchyroll",
+    "registro": false,
+    "regiones": "*",
+    "anuncios": true,
+    "consejoPremium": "Bueno para probar series antes de decidir si vale la pena verlas completas en Crunchyroll."
+  },
+  {
+    "nombre": "Tivify",
+    "url": "https://www.tivify.tv",
+    "categoria": "anime",
+    "mejorPara": "Canales lineales 'Anime Visión' y 'Anime Visión Classics', gratis con anuncios",
+    "registro": true,
+    "regiones": ["ES"],
+    "anuncios": true,
+    "consejoPremium": "Solo disponible en España; revisa el canal 'Anime Visión Classics' para clásicos como Slayers o Ranma 1/2."
+  },
+  {
+    "nombre": "Bilibili Global",
+    "url": "https://www.bilibili.tv",
+    "categoria": "anime",
+    "mejorPara": "Anime con anuncios y catálogo internacional (cobertura real por país variable)",
+    "registro": true,
+    "regiones": "*",
+    "anuncios": true,
+    "consejoPremium": "Verifica disponibilidad real en tu país al entrar — la cobertura declarada es global pero varía en la práctica."
+  },
   { "nombre": "Proyecto Gutenberg", "url": "https://www.gutenberg.org", "categoria": "libros", "mejorPara": "70,000+ libros clásicos de dominio público en varios formatos", "registro": false, "regiones": "*", "anuncios": false, "consejoPremium": "Descarga en EPUB y envíalos a tu Kindle o app de lectura; hay sección en español." },
   { "nombre": "Open Library", "url": "https://openlibrary.org", "categoria": "libros", "mejorPara": "Préstamo digital gratuito de millones de libros (como biblioteca)", "registro": true, "regiones": "*", "anuncios": false, "consejoPremium": "Funciona como biblioteca real: pides prestado el libro digital por 14 días, gratis." },
   { "nombre": "Elejandría", "url": "https://www.elejandria.com", "categoria": "libros", "mejorPara": "Libros de dominio público en español, descarga directa", "registro": false, "regiones": "*", "anuncios": true, "consejoPremium": "Colecciones por autor: toda la obra de Galdós, Cervantes o Quiroga en un clic." },
